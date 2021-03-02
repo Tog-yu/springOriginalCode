@@ -60,7 +60,7 @@ import org.springframework.util.StringUtils;
  * {@link AbstractBeanFactory} and {@link DefaultListableBeanFactory}
  * (which inherit from it). Can alternatively also be used as a nested
  * helper to delegate to.
- *
+ * Spring默认使用的单例Bean的注册中心
  * @author Juergen Hoeller
  * @since 2.0
  * @see #registerSingleton
@@ -231,7 +231,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					this.suppressedExceptions = new LinkedHashSet<>();
 				}
 				try {
-					singletonObject = singletonFactory.getObject();
+					singletonObject = singletonFactory.getObject();//会调用lamda表达式的内容
 					newSingleton = true;
 				}
 				catch (IllegalStateException ex) {

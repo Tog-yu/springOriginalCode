@@ -262,7 +262,7 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 			tokens = getPropertyNameTokens(getFinalPath(nestedPa, propertyName));
 			if (nestedPa == this) {
 				pv.getOriginalPropertyValue().resolvedTokens = tokens;
-			}
+			} //A a.b.c
 			nestedPa.setPropertyValue(tokens, pv);
 		}
 		else {

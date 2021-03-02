@@ -15,7 +15,8 @@ public class AnnotationMainTest {
 	public static void main(String[] args) {
 //		new ClassPathXmlApplicationContext()
 
-		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(MainConfig.class);
+		ApplicationContext applicationContext =
+				new AnnotationConfigApplicationContext(MainConfig.class);
 
 //		Person bean = applicationContext.getBean(Person.class);
 //		System.out.println(bean);
@@ -44,10 +45,10 @@ public class AnnotationMainTest {
 //		System.out.println(cat1);
 
 
-		Person bean = applicationContext.getBean(Person.class);
-
-		ApplicationContext context = bean.getContext();
-
-		System.out.println(context == applicationContext);
+//		Person bean = applicationContext.getBean(Person.class);
+//
+//		ApplicationContext context = bean.getContext();
+//
+//		System.out.println(context == applicationContext);
 	}
 }

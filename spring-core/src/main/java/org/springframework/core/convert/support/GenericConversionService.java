@@ -62,7 +62,6 @@ import org.springframework.util.StringUtils;
  * @since 3.0
  */
 public class GenericConversionService implements ConfigurableConversionService {
-
 	/**
 	 * General NO-OP converter used when conversion is not required.
 	 */

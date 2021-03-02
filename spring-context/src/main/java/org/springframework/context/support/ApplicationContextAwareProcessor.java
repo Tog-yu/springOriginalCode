@@ -47,7 +47,7 @@ import org.springframework.util.StringValueResolver;
  *
  * <p>Application contexts will automatically register this with their
  * underlying bean factory. Applications do not use this directly.
- *
+ * BeanPostProcessor：Bean的后置处理器
  * @author Juergen Hoeller
  * @author Costin Leau
  * @author Chris Beams
@@ -118,7 +118,7 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 		if (bean instanceof ApplicationEventPublisherAware) {
 			((ApplicationEventPublisherAware) bean).setApplicationEventPublisher(this.applicationContext);
 		}
-		if (bean instanceof MessageSourceAware) {
+		if (bean instanceof MessageSourceAware) { //利用多态的特性调用相关方法注入值
 			((MessageSourceAware) bean).setMessageSource(this.applicationContext);
 		}
 		if (bean instanceof ApplicationStartupAware) {

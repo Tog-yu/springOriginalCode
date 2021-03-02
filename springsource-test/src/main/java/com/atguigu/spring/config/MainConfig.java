@@ -18,13 +18,16 @@ import org.springframework.core.type.AnnotationMetadata;
 @Configuration
 public class MainConfig {
 
+	public MainConfig(){
+		System.out.println("MainConfig...创建了....");
+	}
 
 //	@Bean
-	public Person person(){
-		Person person = new Person();
-		person.setName("李四");
-		return person;
-	}
+//	public Person person(){
+//		Person person = new Person();
+//		person.setName("李四");
+//		return person;
+//	}
 
 
 	/**
@@ -38,21 +41,21 @@ public class MainConfig {
 	 * 	RootBeanDefinition
 	 *
 	 */
-	static class MyImportRegistrar implements ImportBeanDefinitionRegistrar{
-		@Override
-		public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
-											BeanDefinitionRegistry registry) {
-
-
-			// BeanDefinition
-			RootBeanDefinition catDefinition = new RootBeanDefinition();
-			catDefinition.setBeanClass(Cat.class);
-			//可以声明定义信息，包括我需要自动装配什么？
-
-			//Spring 这个实例的类型，名字
-			registry.registerBeanDefinition("tomCat",catDefinition);
-		}
-	}
+//	static class MyImportRegistrar implements ImportBeanDefinitionRegistrar{
+//		@Override
+//		public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
+//											BeanDefinitionRegistry registry) {
+//
+//
+//			// BeanDefinition
+//			RootBeanDefinition catDefinition = new RootBeanDefinition();
+//			catDefinition.setBeanClass(Cat.class);
+//			//可以声明定义信息，包括我需要自动装配什么？
+//
+//			//Spring 这个实例的类型，名字
+//			registry.registerBeanDefinition("tomCat",catDefinition);
+//		}
+//	}
 }
 
 
