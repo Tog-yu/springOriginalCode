@@ -19,7 +19,7 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
 	}
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 		System.out.println("MyBeanPostProcessor...postProcessBeforeInitialization..."+bean+"==>"+beanName);
-		return bean;
+		return bean; // new Object();
 	}
 
 

@@ -74,7 +74,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	private static final int SUPPRESSED_EXCEPTIONS_LIMIT = 100;
 
 
-	/** 缓存所有单实例对象，单例对象池。ioc容器-单例池； Cache of singleton objects: bean name to bean instance. */
+	/** 享元模式的单例。缓存所有单实例对象，单例对象池。ioc容器-单例池； Cache of singleton objects: bean name to bean instance. */
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
 
 	/** Cache of singleton factories: bean name to ObjectFactory. */
@@ -298,7 +298,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 	@Override
 	public boolean containsSingleton(String beanName) {
-		return this.singletonObjects.containsKey(beanName);
+		return this.singletonObjects.containsKey(beanName); //是否已经创建了单例对象
 	}
 
 	@Override
