@@ -2,7 +2,6 @@ package com.atguigu.spring.config;
 
 
 import com.atguigu.spring.bean.Cat;
-import com.atguigu.spring.bean.Person;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.annotation.*;
@@ -22,7 +21,7 @@ public class MainConfig {
 		System.out.println("MainConfig...创建了....");
 	}
 
-//	@Bean
+//	@Bean(initMethod = "")
 //	public Person person(){
 //		Person person = new Person();
 //		person.setName("李四");

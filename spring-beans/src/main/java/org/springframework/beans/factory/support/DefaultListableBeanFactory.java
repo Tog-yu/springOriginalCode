@@ -929,7 +929,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName); //开始解析文件的时候每一个bean标签被解析封装成一个BeanDefinition
 			if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
 				if (isFactoryBean(beanName)) { //如果是FactoryBean则执行下面逻辑
-					Object bean = getBean(FACTORY_BEAN_PREFIX + beanName);
+					Object bean = getBean(FACTORY_BEAN_PREFIX + beanName); //得到HelloFactory
 					if (bean instanceof FactoryBean) {
 						FactoryBean<?> factory = (FactoryBean<?>) bean;
 						boolean isEagerInit;
@@ -953,7 +953,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			}
 		}
 
-		// Trigger post-initialization callback for all applicable beans...
+		// 触发 post-initialization 逻辑；  Trigger post-initialization callback for all applicable beans...
 		for (String beanName : beanNames) {
 			Object singletonInstance = getSingleton(beanName);
 			if (singletonInstance instanceof SmartInitializingSingleton) {
@@ -1223,7 +1223,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			ResolvableType requiredType, @Nullable Object[] args, boolean nonUniqueAsNull) throws BeansException {
 
 		Assert.notNull(requiredType, "Required type must not be null");
-		String[] candidateNames = getBeanNamesForType(requiredType);
+		String[] candidateNames = getBeanNamesForType(requiredType); //按照类型获取组件
 
 		if (candidateNames.length > 1) {
 			List<String> autowireCandidates = new ArrayList<>(candidateNames.length);

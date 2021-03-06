@@ -1,11 +1,10 @@
 package com.atguigu.spring;
 
-import com.atguigu.spring.bean.Cat;
-import com.atguigu.spring.bean.Person;
+
+import com.atguigu.spring.bean.Hello;
 import com.atguigu.spring.config.MainConfig;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * 注解版Spring的用法
@@ -17,6 +16,21 @@ public class AnnotationMainTest {
 
 		ApplicationContext applicationContext =
 				new AnnotationConfigApplicationContext(MainConfig.class);
+
+
+		Hello bean = applicationContext.getBean(Hello.class);
+
+		Hello bea2 = applicationContext.getBean(Hello.class);
+		System.out.println(bean == bea2); //还是单例
+
+		//循环引用,原理测试
+		//AOP,原理测试
+//		HelloService helloService = applicationContext.getBean(HelloService.class);
+//		helloService.sayHello("zhangsan");
+
+
+
+
 
 //		Person bean = applicationContext.getBean(Person.class);
 //		System.out.println(bean);
@@ -50,5 +64,8 @@ public class AnnotationMainTest {
 //		ApplicationContext context = bean.getContext();
 //
 //		System.out.println(context == applicationContext);
+
+
+
 	}
 }

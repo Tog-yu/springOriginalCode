@@ -252,8 +252,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		String beanName = transformedBeanName(name); //转换Bean名字
 		Object beanInstance;
 
-		// Eagerly check singleton cache for manually registered singletons.
-		Object sharedInstance = getSingleton(beanName); //检查缓存中有没有
+		// 先检查单实例bean的缓存 Eagerly check singleton cache for manually registered singletons.
+		Object sharedInstance = getSingleton(beanName); //检查缓存中有没有，如果是第一次获取肯定是没有的
 		if (sharedInstance != null && args == null) {
 			if (logger.isTraceEnabled()) {
 				if (isSingletonCurrentlyInCreation(beanName)) {
@@ -267,16 +267,16 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			beanInstance = getObjectForBeanInstance(sharedInstance, name, beanName, null);
 		}
 
-		else {
+		else { //默认第一次获取组件都会进入else环节
 			// Fail if we're already creating this bean instance:
 			// We're assumably within a circular reference.
 			if (isPrototypeCurrentlyInCreation(beanName)) {
 				throw new BeanCurrentlyInCreationException(beanName);
 			}
 
-			// Check if bean definition exists in this factory.
+			// 拿到整个beanFactory的父工厂；看父工厂没有，从父工厂先尝试获取组件； Check if bean definition exists in this factory.
 			BeanFactory parentBeanFactory = getParentBeanFactory();
-			if (parentBeanFactory != null && !containsBeanDefinition(beanName)) {
+			if (parentBeanFactory != null && !containsBeanDefinition(beanName)) { //以下开始从父工厂获取组件
 				// Not found -> check parent.
 				String nameToLookup = originalBeanName(name);
 				if (parentBeanFactory instanceof AbstractBeanFactory) {
@@ -297,7 +297,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			if (!typeCheckOnly) {
-				markBeanAsCreated(beanName);
+				markBeanAsCreated(beanName); //标记当前beanName的bean已经被创建
 			}
 
 			StartupStep beanCreation = this.applicationStartup.start("spring.beans.instantiate")
@@ -341,7 +341,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 							destroySingleton(beanName);
 							throw ex;
 						}
-					});
+					}); //看当前bean是否是FactoryBean
 					beanInstance = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
 				}
 
@@ -394,7 +394,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				beanCreation.end();
 			}
 		}
-
+		//转Object为Bean的T类型
 		return adaptBeanInstance(name, beanInstance, requiredType);
 	}
 
