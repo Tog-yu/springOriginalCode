@@ -2,8 +2,13 @@ package com.atguigu.spring;
 
 
 import com.atguigu.spring.bean.Hello;
+import com.atguigu.spring.circle.A;
 import com.atguigu.spring.config.MainConfig;
+import com.atguigu.spring.listener.AppEventPublisher;
+import com.atguigu.spring.listener.ChangeEvent;
+import com.atguigu.spring.listener.MessageEvent;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -19,7 +24,6 @@ public class AnnotationMainTest {
 
 
 		Hello bean = applicationContext.getBean(Hello.class);
-
 		Hello bea2 = applicationContext.getBean(Hello.class);
 		System.out.println(bean == bea2); //还是单例
 
@@ -31,8 +35,15 @@ public class AnnotationMainTest {
 
 
 
+		//测试事件
+//		AppEventPublisher eventPublisher = applicationContext.getBean(AppEventPublisher.class);
+//		eventPublisher.publish(new A());
+//		eventPublisher.publish(new MessageEvent("hello，你好"));
+//		eventPublisher.publish(new ChangeEvent(eventPublisher,"sending..."));
+
 
 //		Person bean = applicationContext.getBean(Person.class);
+
 //		System.out.println(bean);
 
 
