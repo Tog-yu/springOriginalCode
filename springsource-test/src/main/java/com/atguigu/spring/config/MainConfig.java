@@ -13,6 +13,7 @@ import org.springframework.core.type.AnnotationMetadata;
  */
 
 //@Import({ MainConfig.MyImportRegistrar.class})
+//@Import(AspectJAutoProxyRegistrar.class)
 @ComponentScan("com.atguigu.spring")
 @Configuration
 public class MainConfig {

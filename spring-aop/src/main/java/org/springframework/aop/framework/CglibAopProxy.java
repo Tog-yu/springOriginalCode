@@ -868,7 +868,7 @@ class CglibAopProxy implements AopProxy, Serializable {
 				return INVOKE_HASHCODE;
 			}
 			Class<?> targetClass = this.advised.getTargetClass();
-			// Proxy is not yet available, but that shouldn't matter.
+			// Proxy is not yet available, but that shouldn't matter. 责任链模式在执行目标方法前后执行其他的通知方法
 			List<?> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
 			boolean haveAdvice = !chain.isEmpty();
 			boolean exposeProxy = this.advised.isExposeProxy();

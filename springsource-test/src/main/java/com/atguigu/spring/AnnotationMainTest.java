@@ -1,8 +1,10 @@
 package com.atguigu.spring;
 
 
+import com.atguigu.spring.aop.HelloService;
 import com.atguigu.spring.bean.Hello;
 import com.atguigu.spring.circle.A;
+import com.atguigu.spring.config.AopOpenConfig;
 import com.atguigu.spring.config.MainConfig;
 import com.atguigu.spring.listener.AppEventPublisher;
 import com.atguigu.spring.listener.ChangeEvent;
@@ -23,14 +25,16 @@ public class AnnotationMainTest {
 				new AnnotationConfigApplicationContext(MainConfig.class);
 
 
-		Hello bean = applicationContext.getBean(Hello.class);
-		Hello bea2 = applicationContext.getBean(Hello.class);
-		System.out.println(bean == bea2); //还是单例
+//		Hello bean = applicationContext.getBean(Hello.class);
+//		Hello bea2 = applicationContext.getBean(Hello.class);
+//		System.out.println(bean == bea2); //还是单例
 
 		//循环引用,原理测试
 		//AOP,原理测试
-//		HelloService helloService = applicationContext.getBean(HelloService.class);
-//		helloService.sayHello("zhangsan");
+		HelloService helloService = applicationContext.getBean(HelloService.class);
+
+
+		helloService.sayHello("zhangsan");
 
 
 

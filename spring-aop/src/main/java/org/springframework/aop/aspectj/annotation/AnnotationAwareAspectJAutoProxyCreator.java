@@ -78,23 +78,23 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorA
 		this.aspectJAdvisorFactory = aspectJAdvisorFactory;
 	}
 
-	@Override
+	@Override   // BeanFactoryAware 来的。 当前后置处理器初始化创建对象的时候回调的
 	protected void initBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		super.initBeanFactory(beanFactory);
 		if (this.aspectJAdvisorFactory == null) {
-			this.aspectJAdvisorFactory = new ReflectiveAspectJAdvisorFactory(beanFactory);
+			this.aspectJAdvisorFactory = new ReflectiveAspectJAdvisorFactory(beanFactory); //准备一个ReflectiveAspectJAdvisorFactory
 		}
 		this.aspectJAdvisorsBuilder =
 				new BeanFactoryAspectJAdvisorsBuilderAdapter(beanFactory, this.aspectJAdvisorFactory);
 	}
 
 
-	@Override
+	@Override  //找到候选的增强器。
 	protected List<Advisor> findCandidateAdvisors() {
-		// Add all the Spring advisors found according to superclass rules.
+		// Add all the Spring advisors found according to superclass rules. 判断这个bean是否需要增强只需要找到他的所有增强器
 		List<Advisor> advisors = super.findCandidateAdvisors();
-		// Build Advisors for all AspectJ aspects in the bean factory.
-		if (this.aspectJAdvisorsBuilder != null) {
+		// 构建增强器？？？？ Build Advisors for all AspectJ aspects in the bean factory.
+		if (this.aspectJAdvisorsBuilder != null) { //增强器的构建器只要有
 			advisors.addAll(this.aspectJAdvisorsBuilder.buildAspectJAdvisors());
 		}
 		return advisors;
@@ -109,7 +109,7 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorA
 		// proxy, and if the aspect implements e.g the Ordered interface it will be
 		// proxied by that interface and fail at runtime as the advice method is not
 		// defined on the interface. We could potentially relax the restriction about
-		// not advising aspects in the future.
+		// not advising aspects in the future.  判断是否切面
 		return (super.isInfrastructureClass(beanClass) ||
 				(this.aspectJAdvisorFactory != null && this.aspectJAdvisorFactory.isAspect(beanClass)));
 	}

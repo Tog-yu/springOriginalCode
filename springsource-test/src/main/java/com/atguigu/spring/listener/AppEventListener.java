@@ -2,16 +2,18 @@ package com.atguigu.spring.listener;
 
 
 import com.atguigu.spring.circle.A;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.PayloadApplicationEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 /**
- * 事件监听器
+ * 事件监听器；为什么一个注解就能监听来事件。。。。。
+ * DataSource。TransationManager（切面） === DBService
+ * @EnableTransationManager
+ *
+ *
  */
-
-//@Component
+@Component
 public class AppEventListener {
 
 	public AppEventListener(){

@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
 
 
-//@Component
+@Component  //切面存在的化就会返回代理对象
 public class HelloService {
 
 	public HelloService(){

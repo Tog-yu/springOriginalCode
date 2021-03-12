@@ -3,7 +3,6 @@ package com.atguigu.spring.aop;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.NoSuchMessageException;
-import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 
@@ -21,6 +20,7 @@ public class MyMS implements MessageSource {
 
 	@Override
 	public String getMessage(MessageSourceResolvable resolvable, Locale locale) throws NoSuchMessageException {
+
 		return null;
 	}
 }
