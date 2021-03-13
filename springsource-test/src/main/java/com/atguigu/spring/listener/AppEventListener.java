@@ -20,7 +20,7 @@ public class AppEventListener {
 		System.out.println("AppEventListener...");
 	}
 
-	@EventListener(MessageEvent.class)
+	@EventListener(MessageEvent.class) //监听事件
 	public void listenMessage(MessageEvent event){
 		System.out.println("Message事件到达..."+event+"；已发送邮件....");
 	}
@@ -31,7 +31,7 @@ public class AppEventListener {
 		System.out.println("Change事件到达..."+event+"；已同步状态....");
 	}
 
-	@EventListener(PayloadApplicationEvent.class)
+	@EventListener(PayloadApplicationEvent.class) //感知任意对象事件的
 	public void listenPayload(PayloadApplicationEvent<A> event){
 		System.out.println("Payload事件到达..."+event.getPayload()+"；已进行处理....");
 	}

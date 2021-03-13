@@ -1,11 +1,19 @@
 package com.atguigu.spring.config;
 
 
+import com.atguigu.spring.aop.HelloService;
 import com.atguigu.spring.bean.Cat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.*;
 import org.springframework.core.type.AnnotationMetadata;
+
+import java.lang.reflect.Method;
 
 
 /**
@@ -18,8 +26,12 @@ import org.springframework.core.type.AnnotationMetadata;
 @Configuration
 public class MainConfig {
 
+	@Autowired
+	ApplicationEventPublisher applicationEventPublisher;
+
 	public MainConfig(){
 		System.out.println("MainConfig...创建了....");
+//		applicationEventPublisher.publishEvent();
 	}
 
 //	@Bean(initMethod = "")
@@ -47,6 +59,15 @@ public class MainConfig {
 											BeanDefinitionRegistry registry) {
 
 
+//			Enhancer enhancer = new Enhancer();
+//			enhancer.setCallbacks(new MethodInterceptor(){
+//
+//				@Override
+//				public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+//					return null;
+//				}
+//			});
+//			enhancer.setSuperclass(HelloService.class);
 			// BeanDefinition
 			RootBeanDefinition catDefinition = new RootBeanDefinition();
 			catDefinition.setBeanClass(Cat.class);

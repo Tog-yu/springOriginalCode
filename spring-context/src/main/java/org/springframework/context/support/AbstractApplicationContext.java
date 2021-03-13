@@ -404,10 +404,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		// Decorate event as an ApplicationEvent if necessary
 		ApplicationEvent applicationEvent;
-		if (event instanceof ApplicationEvent) {
+		if (event instanceof ApplicationEvent) { // ApplicationEvent接口下的时间
 			applicationEvent = (ApplicationEvent) event;
 		}
-		else {
+		else {  //任意对象作为事件最终被封装到了 PayloadApplicationEvent
 			applicationEvent = new PayloadApplicationEvent<>(this, event);
 			if (eventType == null) {
 				eventType = ((PayloadApplicationEvent<?>) applicationEvent).getResolvableType();

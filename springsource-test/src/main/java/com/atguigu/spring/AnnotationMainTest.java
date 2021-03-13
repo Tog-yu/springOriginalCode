@@ -10,6 +10,7 @@ import com.atguigu.spring.listener.AppEventPublisher;
 import com.atguigu.spring.listener.ChangeEvent;
 import com.atguigu.spring.listener.MessageEvent;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -33,17 +34,24 @@ public class AnnotationMainTest {
 		//AOP,原理测试
 		HelloService helloService = applicationContext.getBean(HelloService.class);
 
-
+		//代理对象来调用方法
 		helloService.sayHello("zhangsan");
 
 
 
+//		applicationContext.publishEvent(new Object());
+//		applicationContext.publishEvent(new ApplicationEvent() {
+//			@Override
+//			public String toString() {
+//				return super.toString();
+//			}
+//		});
 
 		//测试事件
-//		AppEventPublisher eventPublisher = applicationContext.getBean(AppEventPublisher.class);
-//		eventPublisher.publish(new A());
-//		eventPublisher.publish(new MessageEvent("hello，你好"));
-//		eventPublisher.publish(new ChangeEvent(eventPublisher,"sending..."));
+		AppEventPublisher eventPublisher = applicationContext.getBean(AppEventPublisher.class);
+		eventPublisher.publish(new A());
+		eventPublisher.publish(new MessageEvent("hello，你好"));
+		eventPublisher.publish(new ChangeEvent(eventPublisher,"sending..."));
 
 
 //		Person bean = applicationContext.getBean(Person.class);

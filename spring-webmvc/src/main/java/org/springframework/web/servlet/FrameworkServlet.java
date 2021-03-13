@@ -514,7 +514,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	}
 
 
-	/**
+	/** 追踪看web应用启动做了什么。
 	 * Overridden method of {@link HttpServletBean}, invoked after any bean properties
 	 * have been set. Creates this servlet's WebApplicationContext.
 	 */
@@ -527,7 +527,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		long startTime = System.currentTimeMillis();
 
 		try {
-			this.webApplicationContext = initWebApplicationContext();
+			this.webApplicationContext = initWebApplicationContext(); //初始化WebIOC容器
 			initFrameworkServlet();
 		}
 		catch (ServletException | RuntimeException ex) {
@@ -575,7 +575,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 						// the root application context (if any; may be null) as the parent
 						cwac.setParent(rootContext);
 					}
-					configureAndRefreshWebApplicationContext(cwac);
+					configureAndRefreshWebApplicationContext(cwac); //配置并且刷新容器
 				}
 			}
 		}
