@@ -1,7 +1,6 @@
 package com.atguigu.web;
 
-import com.atguigu.web.config.AppConfig;
-import org.springframework.web.WebApplicationInitializer;
+import com.atguigu.web.config.SpringConfig;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
@@ -22,20 +21,20 @@ import javax.servlet.ServletRegistration;
  *
  * Servlet3.0是javaEE的Web的规范标准，Tomcat是Servlet3.0规范的一个实现；
  */
-public class AppStarter implements WebApplicationInitializer {
-	@Override
+public class AppStarter /** implements WebApplicationInitializer */ {
+//	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
-		//创建ioc容器
+		//1、创建ioc容器
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-		context.register(AppConfig.class); //传入一个配置类
+		context.register(SpringConfig.class); //2、传入一个配置类
 		//以上截止，ioc容器都没有启动
-		//配置了 DispatcherServlet
+		//3、配置了 DispatcherServlet,利用Servlet的初始化机制
 		DispatcherServlet servlet = new DispatcherServlet(context);
 		ServletRegistration.Dynamic registration = servletContext.addServlet("app", servlet);
 		registration.setLoadOnStartup(1);
 		registration.addMapping("/"); //映射路径
 
-		//启动了容器？
+		//启动了容器？上面的Servlet添加到 servletContext 里面以后，Tomcat就会对 DispatcherServlet进行初始化
 		//<servlet></servlet>
 //		servletContext.addServlet("abc",XXXX.class)
 

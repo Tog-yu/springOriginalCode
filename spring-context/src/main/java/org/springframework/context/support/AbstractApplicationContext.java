@@ -939,7 +939,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		getLifecycleProcessor().onRefresh();
 
 		//发布事件 Publish the final event.
-		publishEvent(new ContextRefreshedEvent(this));
+		publishEvent(new ContextRefreshedEvent(this)); //发布上下文环境刷新完成的事件
 
 		//jconsole（暴露MBean端点信息） Participate in LiveBeansView MBean, if active.
 		if (!NativeDetector.inNativeImage()) {
