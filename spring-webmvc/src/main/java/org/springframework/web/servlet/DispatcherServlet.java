@@ -1051,12 +1051,12 @@ public class DispatcherServlet extends FrameworkServlet {
 						return;
 					}
 				}
-
+				//所有拦截器的 preHandle 执行
 				if (!mappedHandler.applyPreHandle(processedRequest, response)) {
-					return;
+					return; //使用 mappedHandler整个链
 				}
 
-				// Actually invoke the handler.
+				//真正来执行目标方法 Actually invoke the handler.
 				mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
 
 				if (asyncManager.isConcurrentHandlingStarted()) {
@@ -1073,7 +1073,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				// As of 4.3, we're processing Errors thrown from handler methods as well,
 				// making them available for @ExceptionHandler methods and other scenarios.
 				dispatchException = new NestedServletException("Handler dispatch failed", err);
-			}
+			} //处理结果
 			processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);
 		}
 		catch (Exception ex) {
@@ -1103,8 +1103,8 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * Do we need view name translation?
 	 */
 	private void applyDefaultViewName(HttpServletRequest request, @Nullable ModelAndView mv) throws Exception {
-		if (mv != null && !mv.hasView()) {
-			String defaultViewName = getDefaultViewName(request);
+		if (mv != null && !mv.hasView()) { //如果没有指定跳转的页面
+			String defaultViewName = getDefaultViewName(request); //给一个默认页面
 			if (defaultViewName != null) {
 				mv.setViewName(defaultViewName);
 			}
@@ -1121,21 +1121,21 @@ public class DispatcherServlet extends FrameworkServlet {
 
 		boolean errorView = false;
 
-		if (exception != null) {
+		if (exception != null) { //如果有异常处理异常
 			if (exception instanceof ModelAndViewDefiningException) {
 				logger.debug("ModelAndViewDefiningException encountered", exception);
 				mv = ((ModelAndViewDefiningException) exception).getModelAndView();
 			}
-			else {
+			else {  //定义无数种异常解析器就会得到不同的异常解析效果
 				Object handler = (mappedHandler != null ? mappedHandler.getHandler() : null);
 				mv = processHandlerException(request, response, handler, exception);
 				errorView = (mv != null);
 			}
 		}
 
-		// Did the handler return a view to render?
+		// 动态策略。 Did the handler return a view to render?   为啥？@ResponseBody（提前在解析返回值的时候，就已经把数据写出去了，所以这一步就没有了）
 		if (mv != null && !mv.wasCleared()) {
-			render(mv, request, response);
+			render(mv, request, response); //渲染ModeAndView，来解析模型和视图；最终决定响应效果
 			if (errorView) {
 				WebUtils.clearErrorRequestAttributes(request);
 			}
@@ -1285,7 +1285,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * @throws ServletException if no HandlerAdapter can be found for the handler. This is a fatal error.
 	 */
 	protected HandlerAdapter getHandlerAdapter(Object handler) throws ServletException {
-		if (this.handlerAdapters != null) {
+		if (this.handlerAdapters != null) { //拿到默认的所有适配器
 			for (HandlerAdapter adapter : this.handlerAdapters) {
 				if (adapter.supports(handler)) {
 					return adapter;
@@ -1314,7 +1314,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		request.removeAttribute(HandlerMapping.PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE);
 
 		// Check registered HandlerExceptionResolvers...
-		ModelAndView exMv = null;
+		ModelAndView exMv = null; //所有异常解析器继续解析
 		if (this.handlerExceptionResolvers != null) {
 			for (HandlerExceptionResolver resolver : this.handlerExceptionResolvers) {
 				exMv = resolver.resolveException(request, response, handler, ex);
