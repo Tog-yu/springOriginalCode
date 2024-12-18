@@ -48,10 +48,10 @@ public class AnnotationMainTest {
 //		});
 
 		//测试事件
-		AppEventPublisher eventPublisher = applicationContext.getBean(AppEventPublisher.class);
-		eventPublisher.publish(new A());
-		eventPublisher.publish(new MessageEvent("hello，你好"));
-		eventPublisher.publish(new ChangeEvent(eventPublisher,"sending..."));
+//		AppEventPublisher eventPublisher = applicationContext.getBean(AppEventPublisher.class);
+//		eventPublisher.publish(new A());
+//		eventPublisher.publish(new MessageEvent("hello，你好"));
+//		eventPublisher.publish(new ChangeEvent(eventPublisher,"sending..."));
 
 
 //		Person bean = applicationContext.getBean(Person.class);
