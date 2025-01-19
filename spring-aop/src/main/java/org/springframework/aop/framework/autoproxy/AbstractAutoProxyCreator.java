@@ -239,15 +239,27 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		this.earlyProxyReferences.put(cacheKey, bean);
 		return wrapIfNecessary(bean, beanName, cacheKey);
 	}
-
+	/**
+	 * 在创建Bean的流程中还没调用构造器来实例化Bean的时候进行调用(实例化前后)
+	 * AOP解析切面以及事务解析事务注解都是在这里完成的
+	 * @param beanClass the class of the bean to be instantiated
+	 * @param beanName the name of the bean
+	 * @return
+	 */
 	@Override
 	public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) {
+		//获取BeanClass的缓存key
 		Object cacheKey = getCacheKey(beanClass, beanName);
 
 		if (!StringUtils.hasLength(beanName) || !this.targetSourcedBeans.contains(beanName)) {
+			//advisedBeans保存了所有已经做过动态代理的Bean
+			// 如果被解析过则直接返回
 			if (this.advisedBeans.containsKey(cacheKey)) { //已经分析过的组件内
 				return null;
 			} //所有增强了的组件会被缓存在advisedBeans，如果我们需要增强的bean，我们就放在缓存中
+			// 1. 判断当前bean是否是基础类型：是否实现了Advice，Pointcut，Advisor，AopInfrastructureBean这些接口或是否是切面(@Aspect注解)
+			// 2. 判断是不是应该跳过 (AOP解析直接解析出我们的切面信息，
+			// 而事务在这里是不会解析的)
 			if (isInfrastructureClass(beanClass) || shouldSkip(beanClass, beanName)) {
 				this.advisedBeans.put(cacheKey, Boolean.FALSE);
 				return null;
@@ -257,7 +269,11 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		//创建个代理 Create proxy here if we have a custom TargetSource.
 		// Suppresses unnecessary default instantiation of the target bean:
 		// The TargetSource will handle target instances in a custom fashion.
+		//获取用户自定义的targetSource, 如果存在则直接在对象实例化之前进行代理创建,
+		// 避免了目标对象不必要的实例化
 		TargetSource targetSource = getCustomTargetSource(beanClass, beanName);
+		//如果有自定义targetSource就要这里创建代理对象
+		//这样做的好处是被代理的对象可以动态改变，而不是值针对一个target对象(可以对对象池中对象进行代理，可以每次创建代理都创建新对象
 		if (targetSource != null) {
 			if (StringUtils.hasLength(beanName)) {
 				this.targetSourcedBeans.add(beanName);

@@ -248,14 +248,19 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	protected <T> T doGetBean(
 			String name, @Nullable Class<T> requiredType, @Nullable Object[] args, boolean typeCheckOnly)
 			throws BeansException {
-
+		//通过三种形式获取beanName
+		// 一个是原始的beanName，一个是加了&的，一个是别名
 		String beanName = transformedBeanName(name); //转换Bean名字
 		Object beanInstance;
 
 		// 先检查单实例bean的缓存 Eagerly check singleton cache for manually registered singletons.
 		Object sharedInstance = getSingleton(beanName); //检查缓存中有没有，如果是第一次获取肯定是没有的
+		//如果先前已经创建过单例Bean的实例，并且调用的getBean方法传入的参数为空
+		//则执行if里面的逻辑
+		//args之所以要求为空是因为如果有args，则需要做进一步赋值，因此无法直接返回
 		if (sharedInstance != null && args == null) {
 			if (logger.isTraceEnabled()) {
+				//如果Bean还在创建中，则说明是循环引用
 				if (isSingletonCurrentlyInCreation(beanName)) {
 					logger.trace("Returning eagerly cached instance of singleton bean '" + beanName +
 							"' that is not fully initialized yet - a consequence of a circular reference");
@@ -264,12 +269,16 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					logger.trace("Returning cached instance of singleton bean '" + beanName + "'");
 				}
 			}
+			// 如果是普通bean，直接返回，如果是FactoryBean，则返回他的getObject
 			beanInstance = getObjectForBeanInstance(sharedInstance, name, beanName, null);
 		}
-
+		//若scope为prototype或者单例模式但是缓存中还不存在bean
 		else { //默认第一次获取组件都会进入else环节
 			// Fail if we're already creating this bean instance:
 			// We're assumably within a circular reference.
+			//如果scope为prototype并且显示还在创建中，则基本是循环依赖的情况
+			//针对prototype的循环依赖，spring无解，直接抛出异常
+			// A->B->A
 			if (isPrototypeCurrentlyInCreation(beanName)) {
 				throw new BeanCurrentlyInCreationException(beanName);
 			}
@@ -306,11 +315,18 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				if (requiredType != null) {
 					beanCreation.tag("beanType", requiredType::toString);
 				}
+				//将父类的BeanDefinition与子类的BeanDefinition进行合并覆盖
 				RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
+				//对合并的BeanDefinition做验证，主要看属性是否为abstract的
 				checkMergedBeanDefinition(mbd, beanName, args);
 
 				// Guarantee initialization of beans that the current bean depends on.
+				// 获取当前Bean所有依赖Bean的名称
 				String[] dependsOn = mbd.getDependsOn();
+				// 如果当前Bean设置了dependsOn的属性
+				//depends-on用来指定Bean初始化及销毁时的顺序
+				//<bean id=a Class="com.imooc.A" depends-on="b" />
+				// <bean id=b Class="com.imooc.B" />
 				if (dependsOn != null) {
 					for (String dep : dependsOn) { //看当前Bean有没有依赖其他Bean
 						if (isDependent(beanName, dep)) {
